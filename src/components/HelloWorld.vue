@@ -134,6 +134,7 @@ export default {
         vm.$store.dispatch('commitOdin', 'Chen') :
         vm.$store.dispatch('commitOdin', 'Husky') ;
     }
+    
   },
   computed: {
     showText () {
