@@ -134,11 +134,23 @@ export default {
         vm.$store.dispatch('commitOdin', 'Chen') :
         vm.$store.dispatch('commitOdin', 'Husky') ;
     }
-    
+
   },
   computed: {
     showText () {
       return `Odin ${this.$store.state.odin}`
+    }
+  },
+  watch: {
+    count (count) {
+      const vm = this;
+      if (count > 50) {
+        if(count % 2 === 0) {
+          vm.count = 2;
+        } else {
+          vm.count = 1;
+        }
+      }
     }
   },
 };
@@ -169,5 +181,7 @@ a {
   height: 20px;
   border-radius: 5px;
   box-shadow: 5px 5px 5px #000000;
+  padding: 5px;
+  cursor: pointer;
 }
 </style>
