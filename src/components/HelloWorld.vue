@@ -7,9 +7,10 @@
     <h1 class="mt-5">{{ showText }}</h1>
 
     <a class="specialBtn"
-      @click.prevent="getUser"
+      @click.prevent="getUserList"
     >GET USER LIST</a>
-    <div class="container w-crtl mt-5">
+
+    <div class="container w-crtl mt-5" v-if="userList.length > 0">
       <div class="card-deck">
         <div class="card" v-for="item in userList" :key="item.id.value">
           <img :src="item.picture.large" class="card-img-top">
@@ -28,6 +29,9 @@
 </template>
 
 <script>
+// import Getters 以及 Actions
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: "HelloWorld",
   props: {
@@ -50,19 +54,29 @@ export default {
         vm.$store.dispatch('commitOdin', 'Husky') ;
     },
     // 取得遠端資料
-    getUser() {
-      const vm = this;
-      vm.$store.dispatch('getUserList');
-    }
+    // getUser() {
+    //   const vm = this;
+    //   vm.$store.dispatch('getUserList');
+    // }
+    // 利用 mapActions 取代 methods
+    // 模組化以後則在前方加入模組的名稱
+    ...mapActions('userModule', ['getUserList'])
 
   },
   computed: {
-    showText () {
-      return `Odin ${this.$store.state.odin}`
-    },
-    userList () {
-      return this.$store.state.user;
-    }
+    // 利用 mapGetters 取代 compute
+    // showText () {
+    //   return `Odin ${this.$store.state.odin}`
+    // },
+    // userList () {
+    //   return this.$store.state.user;
+    // }
+    // 利用解構的方式取出特定的 Getter 作為 computed 使用
+    // 模組化以後則在前方加入模組的名稱
+
+    ...mapGetters('userModule', ['userList']),
+    ...mapGetters(['showText'])
+
   },
   watch: {
     count (count) {
@@ -75,6 +89,14 @@ export default {
         }
       }
     }
+  },
+  // lifecycle hook
+  created() {
+    const id = '1069';
+    const gg = '18/5';
+    console.log('hooks => created');
+    // vuex action to demo passing payload params by object form
+    this.$store.dispatch('passParamByObject', {id, gg});
   },
 };
 </script>
